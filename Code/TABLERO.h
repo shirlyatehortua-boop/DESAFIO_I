@@ -8,6 +8,7 @@
 #include <vector>
 using namespace std;
 
+// mi tablero pedirá filas y columnas
 int main() {
 
     int filas, columnas;
@@ -18,6 +19,7 @@ int main() {
     cout << "Ingrese el numero de columnas: ";
     cin >> columnas;
 
+//CREAR EL TABLERITO
     vector<vector<int>> tablero(filas, vector<int>(columnas, 0));
 
     // Mostrar el tablero
