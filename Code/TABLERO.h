@@ -1,14 +1,11 @@
 #ifndef TABLERO_H
 #define TABLERO_H
 
-#endif // TABLERO_H
 //ESTE HEADER LO UTILIZARE PARA EL TABLERO PARA TENER MAYOR ORGANIZACION
 
-#include <iostream>
-#include <vector>
-using namespace std;
+// mi tablero pedirá filas y columnas, se representa el tablero de juego usando 1 bit por celda
+//empacado en bytes, por el ancho debe ser multiplo de 8, cada fila ocupa (ancho / 8) bytes.
 
-// mi tablero pedirá filas y columnas
 int main() {
 
     int filas, columnas;
