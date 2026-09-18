@@ -5,7 +5,6 @@
 // Estaba haciendo el proyecto del semestre pasado
 //Entonces para seguir con el orden de los commits retomo nuevamente con los codigos
 
-
 unsigned char* crearTablero(int ancho, int alto);
 
 void inicializarTablero(unsigned char* tablero, int ancho, int alto);

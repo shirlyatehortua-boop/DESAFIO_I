@@ -80,7 +80,11 @@ int obtenerFicha(unsigned char* tablero, int ancho, int fila, int columna)
     return valor;
 }
 
-void modificarFicha(unsigned char* tablero, int ancho, int fila, int columna, int ficha)
+void modificarFicha(unsigned char* tablero,
+                    int ancho,
+                    int fila,
+                    int columna,
+                    int ficha)
 {
     int indice = fila * ancho + columna;
 
