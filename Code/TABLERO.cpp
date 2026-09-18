@@ -144,6 +144,39 @@ void mostrarTablero(unsigned char* tablero, int ancho, int alto)
     }
 }
 
+void aplicarGravedad(unsigned char* tablero, int ancho, int alto)
+{
+    for (int columna = 0; columna < ancho; columna++)
+    {
+        int posicionLibre = alto - 1;
+
+        for (int fila = alto - 1; fila >= 0; fila--)
+        {
+            int ficha = obtenerFicha(tablero, ancho, fila, columna);
+
+            if (ficha != 0)
+            {
+                modificarFicha(tablero,
+                               ancho,
+                               posicionLibre,
+                               columna,
+                               ficha);
+
+                if (posicionLibre != fila)
+                {
+                    modificarFicha(tablero,
+                                   ancho,
+                                   fila,
+                                   columna,
+                                   0);
+                }
+
+                posicionLibre--;
+            }
+        }
+    }
+}
+
 void liberarTablero(unsigned char* tablero)
 {
     delete[] tablero;

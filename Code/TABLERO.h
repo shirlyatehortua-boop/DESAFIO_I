@@ -19,6 +19,8 @@ void modificarFicha(unsigned char* tablero, int ancho, int fila, int columna, in
 
 void mostrarTablero(unsigned char* tablero, int ancho, int alto);
 
+void aplicarGravedad(unsigned char* tablero, int ancho, int alto);
+
 void liberarTablero(unsigned char* tablero);
 
 #endif

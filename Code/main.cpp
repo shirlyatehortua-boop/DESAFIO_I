@@ -48,7 +48,11 @@ int main()
 
     mostrarTablero(tablero, ancho, alto);
 
-    cout << "Tablero:" << endl;
+    cout << endl;
+
+    aplicarGravedad(tablero, ancho, alto);
+
+    cout << "Tablero despues de aplicar gravedad:" << endl;
 
     mostrarTablero(tablero, ancho, alto);
 
