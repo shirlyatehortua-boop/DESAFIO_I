@@ -16,11 +16,11 @@ int main()
 
     unsigned char* tablero = crearTablero(ancho, alto);
 
-    cout << "Tablero creado correctamente." << endl;
+    inicializarTablero(tablero, ancho, alto);
+
+    cout << "Tablero creado e inicializado correctamente." << endl;
 
     liberarTablero(tablero);
-
-    cout << "Memoria liberada correctamente." << endl;
 
     return 0;
 }

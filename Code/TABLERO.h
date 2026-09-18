@@ -7,6 +7,12 @@
 
 unsigned char* crearTablero(int ancho, int alto);
 
+void inicializarTablero(unsigned char* tablero, int ancho, int alto);
+
+int obtenerFicha(unsigned char* tablero, int ancho, int fila, int columna);
+
+void modificarFicha(unsigned char* tablero, int ancho, int fila, int columna, int ficha);
+
 void liberarTablero(unsigned char* tablero);
 
 #endif
