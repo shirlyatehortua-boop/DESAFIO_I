@@ -4,7 +4,7 @@ using namespace std;
 
 int main()
 {
-    cout << "Empezar a jugar Tetris" << endl;
+    cout << "Sweet Crush" << endl;
 
     return 0;
 }

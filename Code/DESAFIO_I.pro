@@ -4,8 +4,6 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        TABLERO.cpp \
         main.cpp
 
-HEADERS += \
-    TABLERO.h
+HEADERS +=
