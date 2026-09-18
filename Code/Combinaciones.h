@@ -18,6 +18,11 @@ void detectarCombinaciones(unsigned char* tablero,
                            int ancho,
                            int alto);
 
+void eliminarCombinaciones(unsigned char* tablero,
+                           unsigned char* eliminadas,
+                           int ancho,
+                           int alto);
+
 void liberarMarcador(unsigned char* eliminadas);
 
 #endif

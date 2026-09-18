@@ -36,6 +36,18 @@ int main()
 
     detectarCombinaciones(tablero, eliminadas, ancho, alto);
 
+    cout << "Tablero antes de eliminar:" << endl;
+
+    mostrarTablero(tablero, ancho, alto);
+
+    cout << endl;
+
+    eliminarCombinaciones(tablero, eliminadas, ancho, alto);
+
+    cout << "Tablero despues de eliminar:" << endl;
+
+    mostrarTablero(tablero, ancho, alto);
+
     cout << "Tablero:" << endl;
 
     mostrarTablero(tablero, ancho, alto);

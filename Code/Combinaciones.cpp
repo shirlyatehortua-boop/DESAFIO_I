@@ -66,6 +66,26 @@ void detectarCombinaciones(unsigned char* tablero,
     }
 }
 
+void eliminarCombinaciones(unsigned char* tablero,
+                           unsigned char* eliminadas,
+                           int ancho,
+                           int alto)
+{
+    for (int fila = 0; fila < alto; fila++)
+    {
+        for (int columna = 0; columna < ancho; columna++)
+        {
+            int posicion = fila * ancho + columna;
+
+            if (eliminadas[posicion] == 1)
+            {
+                modificarFicha(tablero, ancho, fila, columna, 0);
+            }
+        }
+    }
+}
+
+
 void liberarMarcador(unsigned char* eliminadas)
 {
     delete[] eliminadas;
