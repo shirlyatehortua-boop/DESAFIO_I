@@ -4,6 +4,8 @@
 
 
 #include "Tablero.h"
+#include <cstdlib>
+#include <iostream>
 
 unsigned char* crearTablero(int ancho, int alto)
 {
@@ -25,6 +27,24 @@ void inicializarTablero(unsigned char* tablero, int ancho, int alto)
     for (int i = 0; i < cantidadBytes; i++)
     {
         tablero[i] = 0;
+    }
+}
+
+int generarFicha()
+{
+    return rand() % 6 + 1;
+}
+
+void llenarTablero(unsigned char* tablero, int ancho, int alto)
+{
+    for (int fila = 0; fila < alto; fila++)
+    {
+        for (int columna = 0; columna < ancho; columna++)
+        {
+            int ficha = generarFicha();
+
+            modificarFicha(tablero, ancho, fila, columna, ficha);
+        }
     }
 }
 
@@ -104,6 +124,19 @@ void modificarFicha(unsigned char* tablero, int ancho, int fila, int columna, in
         tablero[byte + 1] =
             tablero[byte + 1] |
             ((ficha >> bitsPrimerByte) & mascaraSegundoByte);
+    }
+}
+
+void mostrarTablero(unsigned char* tablero, int ancho, int alto)
+{
+    for (int fila = 0; fila < alto; fila++)
+    {
+        for (int columna = 0; columna < ancho; columna++)
+        {
+            std::cout << obtenerFicha(tablero, ancho, fila, columna) << " ";
+        }
+
+        std::cout << std::endl;
     }
 }
 

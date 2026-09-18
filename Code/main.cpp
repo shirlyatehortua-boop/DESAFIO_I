@@ -1,26 +1,27 @@
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 #include "Tablero.h"
 
 using namespace std;
 
 int main()
 {
-    int ancho;
-    int alto;
+    int ancho = 6;
+    int alto = 6;
 
-    cout << "Ingrese el ancho del tablero: ";
-    cin >> ancho;
-
-    cout << "Ingrese el alto del tablero: ";
-    cin >> alto;
+    srand(time(0));
 
     unsigned char* tablero = crearTablero(ancho, alto);
 
     inicializarTablero(tablero, ancho, alto);
 
-    cout << "Tablero creado e inicializado correctamente." << endl;
+    llenarTablero(tablero, ancho, alto);
+
+    mostrarTablero(tablero, ancho, alto);
 
     liberarTablero(tablero);
 
     return 0;
 }
+    //11:33 de la noche, estudiando la siguiente parte
