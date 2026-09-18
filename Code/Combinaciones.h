@@ -13,10 +13,10 @@ unsigned char* crearMarcador(int ancho, int alto);
 
 void inicializarMarcador(unsigned char* eliminadas, int ancho, int alto);
 
-void detectarCombinaciones(unsigned char* tablero,
-                           unsigned char* eliminadas,
-                           int ancho,
-                           int alto);
+int detectarCombinaciones(unsigned char* tablero,
+                          unsigned char* eliminadas,
+                          int ancho,
+                          int alto);
 
 void eliminarCombinaciones(unsigned char* tablero,
                            unsigned char* eliminadas,

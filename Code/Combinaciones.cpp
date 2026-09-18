@@ -24,11 +24,13 @@ void inicializarMarcador(unsigned char* eliminadas, int ancho, int alto)
     }
 }
 
-void detectarCombinaciones(unsigned char* tablero,
-                           unsigned char* eliminadas,
-                           int ancho,
-                           int alto)
+int detectarCombinaciones(unsigned char* tablero,
+                          unsigned char* eliminadas,
+                          int ancho,
+                          int alto)
 {
+    int encontroCombinacion = 0;
+
     // Deteccion horizontal
     for (int fila = 0; fila < alto; fila++)
     {
@@ -43,6 +45,8 @@ void detectarCombinaciones(unsigned char* tablero,
                 eliminadas[fila * ancho + columna] = 1;
                 eliminadas[fila * ancho + columna + 1] = 1;
                 eliminadas[fila * ancho + columna + 2] = 1;
+
+                encontroCombinacion = 1;
             }
         }
     }
@@ -61,9 +65,13 @@ void detectarCombinaciones(unsigned char* tablero,
                 eliminadas[fila * ancho + columna] = 1;
                 eliminadas[(fila + 1) * ancho + columna] = 1;
                 eliminadas[(fila + 2) * ancho + columna] = 1;
+
+                encontroCombinacion = 1;
             }
         }
     }
+
+    return encontroCombinacion;
 }
 
 void eliminarCombinaciones(unsigned char* tablero,
@@ -84,7 +92,6 @@ void eliminarCombinaciones(unsigned char* tablero,
         }
     }
 }
-
 
 void liberarMarcador(unsigned char* eliminadas)
 {

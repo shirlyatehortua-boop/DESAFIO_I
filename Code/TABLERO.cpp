@@ -177,6 +177,26 @@ void aplicarGravedad(unsigned char* tablero, int ancho, int alto)
     }
 }
 
+void rellenarTablero(unsigned char* tablero, int ancho, int alto)
+{
+    for (int fila = 0; fila < alto; fila++)
+    {
+        for (int columna = 0; columna < ancho; columna++)
+        {
+            int ficha = obtenerFicha(tablero, ancho, fila, columna);
+
+            if (ficha == 0)
+            {
+                modificarFicha(tablero,
+                               ancho,
+                               fila,
+                               columna,
+                               generarFicha());
+            }
+        }
+    }
+}
+
 void liberarTablero(unsigned char* tablero)
 {
     delete[] tablero;

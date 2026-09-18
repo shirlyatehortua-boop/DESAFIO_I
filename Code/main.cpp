@@ -34,9 +34,12 @@ int main()
 
     inicializarMarcador(eliminadas, ancho, alto);
 
-    detectarCombinaciones(tablero, eliminadas, ancho, alto);
+    int hayCombinacion = detectarCombinaciones(tablero,
+                                               eliminadas,
+                                               ancho,
+                                               alto);
 
-    cout << "Tablero antes de eliminar:" << endl;
+    cout << "Resultado de deteccion: " << hayCombinacion << endl;
 
     mostrarTablero(tablero, ancho, alto);
 
@@ -69,6 +72,14 @@ int main()
 
         cout << endl;
     }
+
+    cout << endl;
+
+    rellenarTablero(tablero, ancho, alto);
+
+    cout << "Tablero despues de rellenar:" << endl;
+
+    mostrarTablero(tablero, ancho, alto);
 
     liberarMarcador(eliminadas);
 

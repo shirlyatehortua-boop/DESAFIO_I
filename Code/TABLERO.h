@@ -21,6 +21,8 @@ void mostrarTablero(unsigned char* tablero, int ancho, int alto);
 
 void aplicarGravedad(unsigned char* tablero, int ancho, int alto);
 
+void rellenarTablero(unsigned char* tablero, int ancho, int alto);
+
 void liberarTablero(unsigned char* tablero);
 
 #endif
