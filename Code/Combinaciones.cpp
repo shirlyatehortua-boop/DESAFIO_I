@@ -93,6 +93,45 @@ void eliminarCombinaciones(unsigned char* tablero,
     }
 }
 
+int procesarCascadas(unsigned char* tablero,
+                     unsigned char* eliminadas,
+                     int ancho,
+                     int alto)
+{
+    int hayCombinacion = 1;
+    int cantidadCascadas = 0;
+
+    while (hayCombinacion == 1)
+    {
+        inicializarMarcador(eliminadas, ancho, alto);
+
+        hayCombinacion = detectarCombinaciones(tablero,
+                                               eliminadas,
+                                               ancho,
+                                               alto);
+
+        if (hayCombinacion == 1)
+        {
+            cantidadCascadas++;
+
+            eliminarCombinaciones(tablero,
+                                  eliminadas,
+                                  ancho,
+                                  alto);
+
+            aplicarGravedad(tablero,
+                            ancho,
+                            alto);
+
+            rellenarTablero(tablero,
+                            ancho,
+                            alto);
+        }
+    }
+
+    return cantidadCascadas;
+}
+
 void liberarMarcador(unsigned char* eliminadas)
 {
     delete[] eliminadas;

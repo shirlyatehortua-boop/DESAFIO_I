@@ -14,75 +14,61 @@ int main()
 
     srand(time(0));
 
+    // Crear tablero
     unsigned char* tablero = crearTablero(ancho, alto);
 
+    // Inicializar tablero
     inicializarTablero(tablero, ancho, alto);
 
+    // Llenar tablero con fichas aleatorias
     llenarTablero(tablero, ancho, alto);
 
-    // Creamos una combinacion cruzada
+    // Crear marcador
+    unsigned char* eliminadas = crearMarcador(ancho, alto);
+
+    // -------------------------------------------------
+    // PRUEBA CONTROLADA DE COMBINACIONES
+    // -------------------------------------------------
+
+    // Combinacion vertical de fichas 4
     modificarFicha(tablero, ancho, 0, 2, 4);
     modificarFicha(tablero, ancho, 1, 2, 4);
+    modificarFicha(tablero, ancho, 2, 2, 4);
 
+    // Combinacion horizontal de fichas 4
     modificarFicha(tablero, ancho, 2, 0, 4);
     modificarFicha(tablero, ancho, 2, 1, 4);
     modificarFicha(tablero, ancho, 2, 2, 4);
     modificarFicha(tablero, ancho, 2, 3, 4);
     modificarFicha(tablero, ancho, 2, 4, 4);
 
-    unsigned char* eliminadas = crearMarcador(ancho, alto);
+    cout << "Tablero inicial:" << endl;
+    mostrarTablero(tablero, ancho, alto);
+
+    // -------------------------------------------------
+    // PRUEBA DE CASCADAS
+    // -------------------------------------------------
 
     inicializarMarcador(eliminadas, ancho, alto);
 
-    int hayCombinacion = detectarCombinaciones(tablero,
-                                               eliminadas,
-                                               ancho,
-                                               alto);
-
-    cout << "Resultado de deteccion: " << hayCombinacion << endl;
-
-    mostrarTablero(tablero, ancho, alto);
+    int cantidadCascadas = procesarCascadas(tablero,
+                                            eliminadas,
+                                            ancho,
+                                            alto);
 
     cout << endl;
-
-    eliminarCombinaciones(tablero, eliminadas, ancho, alto);
-
-    cout << "Tablero despues de eliminar:" << endl;
-
-    mostrarTablero(tablero, ancho, alto);
+    cout << "Cantidad de cascadas: "
+         << cantidadCascadas << endl;
 
     cout << endl;
-
-    aplicarGravedad(tablero, ancho, alto);
-
-    cout << "Tablero despues de aplicar gravedad:" << endl;
-
+    cout << "Tablero despues de las cascadas:" << endl;
     mostrarTablero(tablero, ancho, alto);
 
-    cout << endl;
-
-    cout << "Marcador:" << endl;
-
-    for (int fila = 0; fila < alto; fila++)
-    {
-        for (int columna = 0; columna < ancho; columna++)
-        {
-            cout << (int)eliminadas[fila * ancho + columna] << " ";
-        }
-
-        cout << endl;
-    }
-
-    cout << endl;
-
-    rellenarTablero(tablero, ancho, alto);
-
-    cout << "Tablero despues de rellenar:" << endl;
-
-    mostrarTablero(tablero, ancho, alto);
+    // -------------------------------------------------
+    // LIBERAR MEMORIA
+    // -------------------------------------------------
 
     liberarMarcador(eliminadas);
-
     liberarTablero(tablero);
 
     return 0;

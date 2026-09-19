@@ -23,6 +23,11 @@ void eliminarCombinaciones(unsigned char* tablero,
                            int ancho,
                            int alto);
 
+int procesarCascadas(unsigned char* tablero,
+                     unsigned char* eliminadas,
+                     int ancho,
+                     int alto);
+
 void liberarMarcador(unsigned char* eliminadas);
 
 #endif
