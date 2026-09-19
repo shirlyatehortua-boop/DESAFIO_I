@@ -25,4 +25,9 @@ void rellenarTablero(unsigned char* tablero, int ancho, int alto);
 
 void liberarTablero(unsigned char* tablero);
 
+unsigned char* agregarFila(unsigned char* tablero,
+                           int ancho,
+                           int alto,
+                           int posicion);
+
 #endif

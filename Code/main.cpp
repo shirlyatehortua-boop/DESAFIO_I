@@ -173,10 +173,42 @@ int main()
 
         else if (opcion == 3)
         {
+            int posicion;
+
             cout << endl;
-            cout << "La funcion de agregar fila "
-                    "aun no esta implementada."
-                 << endl;
+            cout << "=== AGREGAR FILA ===" << endl;
+
+            cout << "Ingrese la posicion de la nueva fila (0 - "
+                 << alto
+                 << "): ";
+
+            cin >> posicion;
+
+            if (posicion < 0 || posicion > alto)
+            {
+                cout << "Posicion invalida." << endl;
+            }
+            else
+            {
+                tablero = agregarFila(tablero,
+                                      ancho,
+                                      alto,
+                                      posicion);
+
+                alto++;
+
+                cout << endl;
+                cout << "Fila agregada correctamente."
+                     << endl;
+
+                cout << endl;
+                cout << "Tablero actualizado:"
+                     << endl;
+
+                mostrarTablero(tablero,
+                               ancho,
+                               alto);
+            }
         }
 
         // -------------------------------------

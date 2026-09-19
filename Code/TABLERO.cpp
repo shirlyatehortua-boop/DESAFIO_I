@@ -201,3 +201,67 @@ void liberarTablero(unsigned char* tablero)
 {
     delete[] tablero;
 }
+
+
+unsigned char* agregarFila(unsigned char* tablero,
+                           int ancho,
+                           int alto,
+                           int posicion)
+{
+    int nuevoAlto = alto + 1;
+
+    int cantidadBits = ancho * nuevoAlto * 3;
+    int cantidadBytes = (cantidadBits + 7) / 8;
+
+    unsigned char* nuevoTablero =
+        new unsigned char[cantidadBytes];
+
+    inicializarTablero(nuevoTablero,
+                       ancho,
+                       nuevoAlto);
+
+    for (int fila = 0; fila < nuevoAlto; fila++)
+    {
+        for (int columna = 0; columna < ancho; columna++)
+        {
+            if (fila < posicion)
+            {
+                int ficha = obtenerFicha(tablero,
+                                         ancho,
+                                         fila,
+                                         columna);
+
+                modificarFicha(nuevoTablero,
+                               ancho,
+                               fila,
+                               columna,
+                               ficha);
+            }
+            else if (fila == posicion)
+            {
+                modificarFicha(nuevoTablero,
+                               ancho,
+                               fila,
+                               columna,
+                               generarFicha());
+            }
+            else
+            {
+                int ficha = obtenerFicha(tablero,
+                                         ancho,
+                                         fila - 1,
+                                         columna);
+
+                modificarFicha(nuevoTablero,
+                               ancho,
+                               fila,
+                               columna,
+                               ficha);
+            }
+        }
+    }
+
+    liberarTablero(tablero);
+
+    return nuevoTablero;
+}
