@@ -30,4 +30,9 @@ unsigned char* agregarFila(unsigned char* tablero,
                            int alto,
                            int posicion);
 
+unsigned char* agregarColumna(unsigned char* tablero,
+                              int ancho,
+                              int alto,
+                              int posicion);
+
 #endif

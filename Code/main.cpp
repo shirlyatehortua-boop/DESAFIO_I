@@ -231,10 +231,42 @@ int main()
 
         else if (opcion == 5)
         {
+            int posicion;
+
             cout << endl;
-            cout << "La funcion de agregar columna "
-                    "aun no esta implementada."
-                 << endl;
+            cout << "=== AGREGAR COLUMNA ===" << endl;
+
+            cout << "Ingrese la posicion de la nueva columna (0 - "
+                 << ancho
+                 << "): ";
+
+            cin >> posicion;
+
+            if (posicion < 0 || posicion > ancho)
+            {
+                cout << "Posicion invalida." << endl;
+            }
+            else
+            {
+                tablero = agregarColumna(tablero,
+                                         ancho,
+                                         alto,
+                                         posicion);
+
+                ancho++;
+
+                cout << endl;
+                cout << "Columna agregada correctamente."
+                     << endl;
+
+                cout << endl;
+                cout << "Tablero actualizado:"
+                     << endl;
+
+                mostrarTablero(tablero,
+                               ancho,
+                               alto);
+            }
         }
 
         // -------------------------------------

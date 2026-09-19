@@ -265,3 +265,66 @@ unsigned char* agregarFila(unsigned char* tablero,
 
     return nuevoTablero;
 }
+
+unsigned char* agregarColumna(unsigned char* tablero,
+                              int ancho,
+                              int alto,
+                              int posicion)
+{
+    int nuevoAncho = ancho + 1;
+
+    int cantidadBits = nuevoAncho * alto * 3;
+    int cantidadBytes = (cantidadBits + 7) / 8;
+
+    unsigned char* nuevoTablero =
+        new unsigned char[cantidadBytes];
+
+    inicializarTablero(nuevoTablero,
+                       nuevoAncho,
+                       alto);
+
+    for (int fila = 0; fila < alto; fila++)
+    {
+        for (int columna = 0; columna < nuevoAncho; columna++)
+        {
+            if (columna < posicion)
+            {
+                int ficha = obtenerFicha(tablero,
+                                         ancho,
+                                         fila,
+                                         columna);
+
+                modificarFicha(nuevoTablero,
+                               nuevoAncho,
+                               fila,
+                               columna,
+                               ficha);
+            }
+            else if (columna == posicion)
+            {
+                modificarFicha(nuevoTablero,
+                               nuevoAncho,
+                               fila,
+                               columna,
+                               generarFicha());
+            }
+            else
+            {
+                int ficha = obtenerFicha(tablero,
+                                         ancho,
+                                         fila,
+                                         columna - 1);
+
+                modificarFicha(nuevoTablero,
+                               nuevoAncho,
+                               fila,
+                               columna,
+                               ficha);
+            }
+        }
+    }
+
+    liberarTablero(tablero);
+
+    return nuevoTablero;
+}
