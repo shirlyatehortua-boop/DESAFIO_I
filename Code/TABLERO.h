@@ -37,6 +37,10 @@ void mostrarTablero(unsigned char* tablero,
                     int ancho,
                     int alto);
 
+void mostrarTableroBinario(unsigned char* tablero,
+                           int ancho,
+                           int alto);
+
 void aplicarGravedad(unsigned char* tablero,
                      int ancho,
                      int alto);

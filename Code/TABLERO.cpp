@@ -224,6 +224,44 @@ void mostrarTablero(unsigned char* tablero,
     }
 }
 
+void mostrarTableroBinario(unsigned char* tablero,
+                           int ancho,
+                           int alto)
+{
+    for (int fila = 0;
+         fila < alto;
+         fila++)
+    {
+        for (int columna = 0;
+             columna < ancho;
+             columna++)
+        {
+            int ficha =
+                obtenerFicha(tablero,
+                             ancho,
+                             fila,
+                             columna);
+
+            int bit2 =
+                (ficha >> 2) & 1;
+
+            int bit1 =
+                (ficha >> 1) & 1;
+
+            int bit0 =
+                ficha & 1;
+
+            std::cout
+                << bit2
+                << bit1
+                << bit0
+                << " ";
+        }
+
+        std::cout << std::endl;
+    }
+}
+
 void aplicarGravedad(unsigned char* tablero,
                      int ancho,
                      int alto)

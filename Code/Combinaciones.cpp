@@ -122,13 +122,6 @@ int detectarCombinaciones(unsigned char* tablero,
     return cantidadCombinaciones;
 }
 
-// Sistema de puntuacion:
-// 10 puntos por cada eliminacion realizada por el usuario.
-// 10 puntos por cada ficha eliminada por combinaciones.
-// 20 puntos por cada combinacion detectada.
-// 30 puntos por cada cascada procesada.
-
-
 int eliminarCombinaciones(unsigned char* tablero,
                           unsigned char* eliminadas,
                           int ancho,
