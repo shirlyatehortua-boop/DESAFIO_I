@@ -7,22 +7,37 @@
 #include <cstdlib>
 #include <iostream>
 
+static int capacidadTablero = 0;
+
 unsigned char* crearTablero(int ancho, int alto)
 {
-    int cantidadBits = ancho * alto * 3;
+    int cantidadBytes = calcularCantidadBytes(ancho, alto);
 
-    int cantidadBytes = (cantidadBits + 7) / 8;
+    unsigned char* tablero =
+        new unsigned char[cantidadBytes];
 
-    unsigned char* tablero = new unsigned char[cantidadBytes];
+    capacidadTablero = cantidadBytes;
 
     return tablero;
 }
 
-void inicializarTablero(unsigned char* tablero, int ancho, int alto)
+int calcularCantidadBytes(int ancho, int alto)
 {
     int cantidadBits = ancho * alto * 3;
-
     int cantidadBytes = (cantidadBits + 7) / 8;
+
+    return cantidadBytes;
+}
+
+int calcularPorcentajeMemoria(int bytesNecesarios,
+                              int bytesActuales)
+{
+    return (bytesNecesarios * 100) / bytesActuales;
+}
+
+void inicializarTablero(unsigned char* tablero, int ancho, int alto)
+{
+    int cantidadBytes = calcularCantidadBytes(ancho, alto);
 
     for (int i = 0; i < cantidadBytes; i++)
     {
@@ -43,21 +58,24 @@ void llenarTablero(unsigned char* tablero, int ancho, int alto)
         {
             int ficha = generarFicha();
 
-            modificarFicha(tablero, ancho, fila, columna, ficha);
+            modificarFicha(tablero,
+                           ancho,
+                           fila,
+                           columna,
+                           ficha);
         }
     }
 }
 
-int obtenerFicha(unsigned char* tablero, int ancho, int fila, int columna)
+int obtenerFicha(unsigned char* tablero,
+                 int ancho,
+                 int fila,
+                 int columna)
 {
     int indice = fila * ancho + columna;
-
     int bitInicial = indice * 3;
-
     int byte = bitInicial / 8;
-
     int desplazamiento = bitInicial % 8;
-
     int valor = 0;
 
     if (desplazamiento <= 5)
@@ -67,14 +85,17 @@ int obtenerFicha(unsigned char* tablero, int ancho, int fila, int columna)
     else
     {
         int bitsPrimerByte = 8 - desplazamiento;
-
         int bitsSegundoByte = 3 - bitsPrimerByte;
 
         int parte1 = tablero[byte] >> desplazamiento;
 
-        int parte2 = tablero[byte + 1] & ((1 << bitsSegundoByte) - 1);
+        int parte2 =
+            tablero[byte + 1] &
+            ((1 << bitsSegundoByte) - 1);
 
-        valor = parte1 | (parte2 << bitsPrimerByte);
+        valor =
+            parte1 |
+            (parte2 << bitsPrimerByte);
     }
 
     return valor;
@@ -87,72 +108,95 @@ void modificarFicha(unsigned char* tablero,
                     int ficha)
 {
     int indice = fila * ancho + columna;
-
     int bitInicial = indice * 3;
-
     int byte = bitInicial / 8;
-
     int desplazamiento = bitInicial % 8;
 
     if (desplazamiento <= 5)
     {
-        unsigned char mascara = 7 << desplazamiento;
-
-        tablero[byte] = tablero[byte] & ~mascara;
+        unsigned char mascara =
+            7 << desplazamiento;
 
         tablero[byte] =
-            tablero[byte] | ((ficha & 7) << desplazamiento);
+            tablero[byte] & ~mascara;
+
+        tablero[byte] =
+            tablero[byte] |
+            ((ficha & 7) << desplazamiento);
     }
     else
     {
         int bitsPrimerByte = 8 - desplazamiento;
-
         int bitsSegundoByte = 3 - bitsPrimerByte;
 
         unsigned char mascaraPrimerByte =
-            ((1 << bitsPrimerByte) - 1) << desplazamiento;
+            ((1 << bitsPrimerByte) - 1)
+            << desplazamiento;
 
         tablero[byte] =
             tablero[byte] & ~mascaraPrimerByte;
 
         tablero[byte] =
             tablero[byte] |
-            ((ficha & ((1 << bitsPrimerByte) - 1)) << desplazamiento);
+            ((ficha &
+              ((1 << bitsPrimerByte) - 1))
+             << desplazamiento);
 
         unsigned char mascaraSegundoByte =
             (1 << bitsSegundoByte) - 1;
 
         tablero[byte + 1] =
-            tablero[byte + 1] & ~mascaraSegundoByte;
+            tablero[byte + 1] &
+            ~mascaraSegundoByte;
 
         tablero[byte + 1] =
             tablero[byte + 1] |
-            ((ficha >> bitsPrimerByte) & mascaraSegundoByte);
+            ((ficha >> bitsPrimerByte) &
+             mascaraSegundoByte);
     }
 }
 
-void mostrarTablero(unsigned char* tablero, int ancho, int alto)
+void mostrarTablero(unsigned char* tablero,
+                    int ancho,
+                    int alto)
 {
     for (int fila = 0; fila < alto; fila++)
     {
-        for (int columna = 0; columna < ancho; columna++)
+        for (int columna = 0;
+             columna < ancho;
+             columna++)
         {
-            std::cout << obtenerFicha(tablero, ancho, fila, columna) << " ";
+            std::cout
+                << obtenerFicha(tablero,
+                                ancho,
+                                fila,
+                                columna)
+                << " ";
         }
 
         std::cout << std::endl;
     }
 }
 
-void aplicarGravedad(unsigned char* tablero, int ancho, int alto)
+void aplicarGravedad(unsigned char* tablero,
+                     int ancho,
+                     int alto)
 {
-    for (int columna = 0; columna < ancho; columna++)
+    for (int columna = 0;
+         columna < ancho;
+         columna++)
     {
         int posicionLibre = alto - 1;
 
-        for (int fila = alto - 1; fila >= 0; fila--)
+        for (int fila = alto - 1;
+             fila >= 0;
+             fila--)
         {
-            int ficha = obtenerFicha(tablero, ancho, fila, columna);
+            int ficha =
+                obtenerFicha(tablero,
+                             ancho,
+                             fila,
+                             columna);
 
             if (ficha != 0)
             {
@@ -177,13 +221,23 @@ void aplicarGravedad(unsigned char* tablero, int ancho, int alto)
     }
 }
 
-void rellenarTablero(unsigned char* tablero, int ancho, int alto)
+void rellenarTablero(unsigned char* tablero,
+                     int ancho,
+                     int alto)
 {
-    for (int fila = 0; fila < alto; fila++)
+    for (int fila = 0;
+         fila < alto;
+         fila++)
     {
-        for (int columna = 0; columna < ancho; columna++)
+        for (int columna = 0;
+             columna < ancho;
+             columna++)
         {
-            int ficha = obtenerFicha(tablero, ancho, fila, columna);
+            int ficha =
+                obtenerFicha(tablero,
+                             ancho,
+                             fila,
+                             columna);
 
             if (ficha == 0)
             {
@@ -202,7 +256,6 @@ void liberarTablero(unsigned char* tablero)
     delete[] tablero;
 }
 
-
 unsigned char* agregarFila(unsigned char* tablero,
                            int ancho,
                            int alto,
@@ -210,8 +263,9 @@ unsigned char* agregarFila(unsigned char* tablero,
 {
     int nuevoAlto = alto + 1;
 
-    int cantidadBits = ancho * nuevoAlto * 3;
-    int cantidadBytes = (cantidadBits + 7) / 8;
+    int cantidadBytes =
+        calcularCantidadBytes(ancho,
+                              nuevoAlto);
 
     unsigned char* nuevoTablero =
         new unsigned char[cantidadBytes];
@@ -220,16 +274,21 @@ unsigned char* agregarFila(unsigned char* tablero,
                        ancho,
                        nuevoAlto);
 
-    for (int fila = 0; fila < nuevoAlto; fila++)
+    for (int fila = 0;
+         fila < nuevoAlto;
+         fila++)
     {
-        for (int columna = 0; columna < ancho; columna++)
+        for (int columna = 0;
+             columna < ancho;
+             columna++)
         {
             if (fila < posicion)
             {
-                int ficha = obtenerFicha(tablero,
-                                         ancho,
-                                         fila,
-                                         columna);
+                int ficha =
+                    obtenerFicha(tablero,
+                                 ancho,
+                                 fila,
+                                 columna);
 
                 modificarFicha(nuevoTablero,
                                ancho,
@@ -247,10 +306,11 @@ unsigned char* agregarFila(unsigned char* tablero,
             }
             else
             {
-                int ficha = obtenerFicha(tablero,
-                                         ancho,
-                                         fila - 1,
-                                         columna);
+                int ficha =
+                    obtenerFicha(tablero,
+                                 ancho,
+                                 fila - 1,
+                                 columna);
 
                 modificarFicha(nuevoTablero,
                                ancho,
@@ -263,7 +323,83 @@ unsigned char* agregarFila(unsigned char* tablero,
 
     liberarTablero(tablero);
 
+    capacidadTablero = cantidadBytes;
+
     return nuevoTablero;
+}
+
+unsigned char* eliminarFila(unsigned char* tablero,
+                            int ancho,
+                            int alto,
+                            int posicion)
+{
+    int nuevoAlto = alto - 1;
+
+    int bytesNecesarios =
+        calcularCantidadBytes(ancho,
+                              nuevoAlto);
+
+    int porcentaje =
+        calcularPorcentajeMemoria(bytesNecesarios,
+                                  capacidadTablero);
+
+    unsigned char* temporal =
+        new unsigned char[bytesNecesarios];
+
+    inicializarTablero(temporal,
+                       ancho,
+                       nuevoAlto);
+
+    int nuevaFila = 0;
+
+    for (int fila = 0;
+         fila < alto;
+         fila++)
+    {
+        if (fila == posicion)
+        {
+            continue;
+        }
+
+        for (int columna = 0;
+             columna < ancho;
+             columna++)
+        {
+            int ficha =
+                obtenerFicha(tablero,
+                             ancho,
+                             fila,
+                             columna);
+
+            modificarFicha(temporal,
+                           ancho,
+                           nuevaFila,
+                           columna,
+                           ficha);
+        }
+
+        nuevaFila++;
+    }
+
+    if (porcentaje < 65)
+    {
+        liberarTablero(tablero);
+
+        capacidadTablero = bytesNecesarios;
+
+        return temporal;
+    }
+
+    for (int i = 0;
+         i < bytesNecesarios;
+         i++)
+    {
+        tablero[i] = temporal[i];
+    }
+
+    liberarTablero(temporal);
+
+    return tablero;
 }
 
 unsigned char* agregarColumna(unsigned char* tablero,
@@ -273,8 +409,9 @@ unsigned char* agregarColumna(unsigned char* tablero,
 {
     int nuevoAncho = ancho + 1;
 
-    int cantidadBits = nuevoAncho * alto * 3;
-    int cantidadBytes = (cantidadBits + 7) / 8;
+    int cantidadBytes =
+        calcularCantidadBytes(nuevoAncho,
+                              alto);
 
     unsigned char* nuevoTablero =
         new unsigned char[cantidadBytes];
@@ -283,16 +420,21 @@ unsigned char* agregarColumna(unsigned char* tablero,
                        nuevoAncho,
                        alto);
 
-    for (int fila = 0; fila < alto; fila++)
+    for (int fila = 0;
+         fila < alto;
+         fila++)
     {
-        for (int columna = 0; columna < nuevoAncho; columna++)
+        for (int columna = 0;
+             columna < nuevoAncho;
+             columna++)
         {
             if (columna < posicion)
             {
-                int ficha = obtenerFicha(tablero,
-                                         ancho,
-                                         fila,
-                                         columna);
+                int ficha =
+                    obtenerFicha(tablero,
+                                 ancho,
+                                 fila,
+                                 columna);
 
                 modificarFicha(nuevoTablero,
                                nuevoAncho,
@@ -310,10 +452,11 @@ unsigned char* agregarColumna(unsigned char* tablero,
             }
             else
             {
-                int ficha = obtenerFicha(tablero,
-                                         ancho,
-                                         fila,
-                                         columna - 1);
+                int ficha =
+                    obtenerFicha(tablero,
+                                 ancho,
+                                 fila,
+                                 columna - 1);
 
                 modificarFicha(nuevoTablero,
                                nuevoAncho,
@@ -326,5 +469,81 @@ unsigned char* agregarColumna(unsigned char* tablero,
 
     liberarTablero(tablero);
 
+    capacidadTablero = cantidadBytes;
+
     return nuevoTablero;
+}
+
+unsigned char* eliminarColumna(unsigned char* tablero,
+                               int ancho,
+                               int alto,
+                               int posicion)
+{
+    int nuevoAncho = ancho - 1;
+
+    int bytesNecesarios =
+        calcularCantidadBytes(nuevoAncho,
+                              alto);
+
+    int porcentaje =
+        calcularPorcentajeMemoria(bytesNecesarios,
+                                  capacidadTablero);
+
+    unsigned char* temporal =
+        new unsigned char[bytesNecesarios];
+
+    inicializarTablero(temporal,
+                       nuevoAncho,
+                       alto);
+
+    for (int fila = 0;
+         fila < alto;
+         fila++)
+    {
+        int nuevaColumna = 0;
+
+        for (int columna = 0;
+             columna < ancho;
+             columna++)
+        {
+            if (columna == posicion)
+            {
+                continue;
+            }
+
+            int ficha =
+                obtenerFicha(tablero,
+                             ancho,
+                             fila,
+                             columna);
+
+            modificarFicha(temporal,
+                           nuevoAncho,
+                           fila,
+                           nuevaColumna,
+                           ficha);
+
+            nuevaColumna++;
+        }
+    }
+
+    if (porcentaje < 65)
+    {
+        liberarTablero(tablero);
+
+        capacidadTablero = bytesNecesarios;
+
+        return temporal;
+    }
+
+    for (int i = 0;
+         i < bytesNecesarios;
+         i++)
+    {
+        tablero[i] = temporal[i];
+    }
+
+    liberarTablero(temporal);
+
+    return tablero;
 }

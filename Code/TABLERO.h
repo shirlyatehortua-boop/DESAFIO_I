@@ -7,6 +7,11 @@
 
 unsigned char* crearTablero(int ancho, int alto);
 
+int calcularCantidadBytes(int ancho, int alto);
+
+int calcularPorcentajeMemoria(int bytesNecesarios,
+                              int bytesActuales);
+
 void inicializarTablero(unsigned char* tablero, int ancho, int alto);
 
 int generarFicha();
@@ -30,9 +35,19 @@ unsigned char* agregarFila(unsigned char* tablero,
                            int alto,
                            int posicion);
 
+unsigned char* eliminarFila(unsigned char* tablero,
+                            int ancho,
+                            int alto,
+                            int posicion);
+
 unsigned char* agregarColumna(unsigned char* tablero,
                               int ancho,
                               int alto,
                               int posicion);
+
+unsigned char* eliminarColumna(unsigned char* tablero,
+                               int ancho,
+                               int alto,
+                               int posicion);
 
 #endif

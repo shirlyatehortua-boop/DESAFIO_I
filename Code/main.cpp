@@ -197,6 +197,10 @@ int main()
 
                 alto++;
 
+                liberarMarcador(eliminadas);
+
+                eliminadas = crearMarcador(ancho, alto);;
+
                 cout << endl;
                 cout << "Fila agregada correctamente."
                      << endl;
@@ -218,10 +222,51 @@ int main()
 
         else if (opcion == 4)
         {
+            int posicion;
+
             cout << endl;
-            cout << "La funcion de eliminar fila "
-                    "aun no esta implementada."
-                 << endl;
+            cout << "=== ELIMINAR FILA ===" << endl;
+
+            cout << "Ingrese la posicion de la fila (0 - "
+                 << alto - 1
+                 << "): ";
+
+            cin >> posicion;
+
+            if (posicion < 0 || posicion >= alto)
+            {
+                cout << "Posicion invalida." << endl;
+            }
+            else if (alto <= 1)
+            {
+                cout << "No se puede eliminar la ultima fila."
+                     << endl;
+            }
+            else
+            {
+                tablero = eliminarFila(tablero,
+                                       ancho,
+                                       alto,
+                                       posicion);
+
+                alto--;
+
+                liberarMarcador(eliminadas);
+
+                eliminadas = crearMarcador(ancho, alto);
+
+                cout << endl;
+                cout << "Fila eliminada correctamente."
+                     << endl;
+
+                cout << endl;
+                cout << "Tablero actualizado:"
+                     << endl;
+
+                mostrarTablero(tablero,
+                               ancho,
+                               alto);
+            }
         }
 
         // -------------------------------------
@@ -255,6 +300,10 @@ int main()
 
                 ancho++;
 
+                liberarMarcador(eliminadas);
+
+                eliminadas = crearMarcador(ancho, alto);
+
                 cout << endl;
                 cout << "Columna agregada correctamente."
                      << endl;
@@ -276,10 +325,51 @@ int main()
 
         else if (opcion == 6)
         {
+            int posicion;
+
             cout << endl;
-            cout << "La funcion de eliminar columna "
-                    "aun no esta implementada."
-                 << endl;
+            cout << "=== ELIMINAR COLUMNA ===" << endl;
+
+            cout << "Ingrese la posicion de la columna (0 - "
+                 << ancho - 1
+                 << "): ";
+
+            cin >> posicion;
+
+            if (posicion < 0 || posicion >= ancho)
+            {
+                cout << "Posicion invalida." << endl;
+            }
+            else if (ancho <= 1)
+            {
+                cout << "No se puede eliminar la ultima columna."
+                     << endl;
+            }
+            else
+            {
+                tablero = eliminarColumna(tablero,
+                                          ancho,
+                                          alto,
+                                          posicion);
+
+                ancho--;
+
+                liberarMarcador(eliminadas);
+
+                eliminadas = crearMarcador(ancho, alto);
+
+                cout << endl;
+                cout << "Columna eliminada correctamente."
+                     << endl;
+
+                cout << endl;
+                cout << "Tablero actualizado:"
+                     << endl;
+
+                mostrarTablero(tablero,
+                               ancho,
+                               alto);
+            }
         }
 
         // -------------------------------------
