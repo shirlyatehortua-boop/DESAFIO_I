@@ -12,21 +12,38 @@ int calcularCantidadBytes(int ancho, int alto);
 int calcularPorcentajeMemoria(int bytesNecesarios,
                               int bytesActuales);
 
-void inicializarTablero(unsigned char* tablero, int ancho, int alto);
+void inicializarTablero(unsigned char* tablero,
+                        int ancho,
+                        int alto);
 
 int generarFicha();
 
-void llenarTablero(unsigned char* tablero, int ancho, int alto);
+void llenarTablero(unsigned char* tablero,
+                   int ancho,
+                   int alto);
 
-int obtenerFicha(unsigned char* tablero, int ancho, int fila, int columna);
+int obtenerFicha(unsigned char* tablero,
+                 int ancho,
+                 int fila,
+                 int columna);
 
-void modificarFicha(unsigned char* tablero, int ancho, int fila, int columna, int ficha);
+void modificarFicha(unsigned char* tablero,
+                    int ancho,
+                    int fila,
+                    int columna,
+                    int ficha);
 
-void mostrarTablero(unsigned char* tablero, int ancho, int alto);
+void mostrarTablero(unsigned char* tablero,
+                    int ancho,
+                    int alto);
 
-void aplicarGravedad(unsigned char* tablero, int ancho, int alto);
+void aplicarGravedad(unsigned char* tablero,
+                     int ancho,
+                     int alto);
 
-void rellenarTablero(unsigned char* tablero, int ancho, int alto);
+void rellenarTablero(unsigned char* tablero,
+                     int ancho,
+                     int alto);
 
 void liberarTablero(unsigned char* tablero);
 

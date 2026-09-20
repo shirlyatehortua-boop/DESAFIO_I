@@ -13,11 +13,14 @@ int main()
     int alto;
     int opcion;
 
-    srand(time(0));
+    // Estadisticas
+    int eliminacionesUsuario = 0;
+    int fichasEliminadas = 0;
+    int combinacionesDetectadas = 0;
+    int cascadasUltimaEliminacion = 0;
+    int puntuacion = 0;
 
-    // -----------------------------------------
-    // CREAR TABLERO
-    // -----------------------------------------
+    srand(time(0));
 
     cout << "========== SWEET CRUSH ==========" << endl;
 
@@ -27,14 +30,14 @@ int main()
     cout << "Ingrese el alto del tablero: ";
     cin >> alto;
 
-    // Validar dimensiones
     if (ancho <= 0 || alto <= 0)
     {
         cout << "Dimensiones invalidas." << endl;
         return 1;
     }
 
-    unsigned char* tablero = crearTablero(ancho, alto);
+    unsigned char* tablero =
+        crearTablero(ancho, alto);
 
     inicializarTablero(tablero,
                        ancho,
@@ -46,10 +49,6 @@ int main()
 
     unsigned char* eliminadas =
         crearMarcador(ancho, alto);
-
-    // -----------------------------------------
-    // MENU PRINCIPAL
-    // -----------------------------------------
 
     do
     {
@@ -68,25 +67,24 @@ int main()
         cout << "Seleccione una opcion: ";
         cin >> opcion;
 
-        // -------------------------------------
+        // --------------------------------------------------
         // OPCION 1
-        // MOSTRAR TABLERO
-        // -------------------------------------
+        // --------------------------------------------------
 
         if (opcion == 1)
         {
             cout << endl;
-            cout << "========== TABLERO ==========" << endl;
+            cout << "========== TABLERO =========="
+                 << endl;
 
             mostrarTablero(tablero,
                            ancho,
                            alto);
         }
 
-        // -------------------------------------
+        // --------------------------------------------------
         // OPCION 2
-        // SELECCIONAR Y ELIMINAR FICHA
-        // -------------------------------------
+        // --------------------------------------------------
 
         else if (opcion == 2)
         {
@@ -94,89 +92,126 @@ int main()
             int columna;
 
             cout << endl;
-            cout << "=== SELECCIONAR FICHA ===" << endl;
+            cout << "=== SELECCIONAR FICHA ==="
+                 << endl;
 
             cout << "Ingrese la fila (0 - "
                  << alto - 1
                  << "): ";
+
             cin >> fila;
 
             cout << "Ingrese la columna (0 - "
                  << ancho - 1
                  << "): ";
+
             cin >> columna;
 
-            // Validar posicion
             if (fila < 0 || fila >= alto ||
                 columna < 0 || columna >= ancho)
             {
                 cout << endl;
-                cout << "Posicion invalida." << endl;
+                cout << "Posicion invalida."
+                     << endl;
             }
             else
             {
-                int ficha = obtenerFicha(tablero,
+                int ficha =
+                    obtenerFicha(tablero,
+                                 ancho,
+                                 fila,
+                                 columna);
+
+                if (ficha == 0)
+                {
+                    cout << endl;
+                    cout << "No hay una ficha en esa posicion."
+                         << endl;
+                }
+                else
+                {
+                    cout << endl;
+                    cout << "Ficha seleccionada: "
+                         << ficha
+                         << endl;
+
+                    modificarFicha(tablero,
+                                   ancho,
+                                   fila,
+                                   columna,
+                                   0);
+
+                    eliminacionesUsuario++;
+                    fichasEliminadas++;
+
+                    // Puntos por eliminacion manual
+                    puntuacion += 10;
+
+                    aplicarGravedad(tablero,
+                                    ancho,
+                                    alto);
+
+                    rellenarTablero(tablero,
+                                    ancho,
+                                    alto);
+
+                    int fichasDeCombinaciones = 0;
+                    int combinacionesMovimiento = 0;
+
+                    cascadasUltimaEliminacion =
+                        procesarCascadas(tablero,
+                                         eliminadas,
                                          ancho,
-                                         fila,
-                                         columna);
+                                         alto,
+                                         &fichasDeCombinaciones,
+                                         &combinacionesMovimiento);
 
-                cout << endl;
-                cout << "Ficha seleccionada: "
-                     << ficha << endl;
+                    fichasEliminadas +=
+                        fichasDeCombinaciones;
 
-                // Eliminar ficha
-                modificarFicha(tablero,
-                               ancho,
-                               fila,
-                               columna,
-                               0);
+                    combinacionesDetectadas +=
+                        combinacionesMovimiento;
 
-                // Aplicar gravedad
-                aplicarGravedad(tablero,
-                                ancho,
-                                alto);
+                    // Puntuacion por combinaciones y cascadas
+                    puntuacion +=
+                        fichasDeCombinaciones * 10;
 
-                // Generar nuevas fichas
-                rellenarTablero(tablero,
-                                ancho,
-                                alto);
+                    puntuacion +=
+                        combinacionesMovimiento * 20;
 
-                // Procesar combinaciones y cascadas
-                int cantidadCascadas =
-                    procesarCascadas(tablero,
-                                     eliminadas,
-                                     ancho,
-                                     alto);
+                    puntuacion +=
+                        cascadasUltimaEliminacion * 30;
 
-                cout << endl;
-                cout << "Ficha eliminada correctamente."
-                     << endl;
+                    cout << endl;
+                    cout << "Ficha eliminada correctamente."
+                         << endl;
 
-                cout << "Cascadas procesadas: "
-                     << cantidadCascadas
-                     << endl;
+                    cout << "Cascadas procesadas: "
+                         << cascadasUltimaEliminacion
+                         << endl;
 
-                cout << endl;
-                cout << "Tablero despues del movimiento:"
-                     << endl;
+                    cout << endl;
+                    cout << "Tablero despues del movimiento:"
+                         << endl;
 
-                mostrarTablero(tablero,
-                               ancho,
-                               alto);
+                    mostrarTablero(tablero,
+                                   ancho,
+                                   alto);
+                }
             }
         }
 
-        // -------------------------------------
+        // --------------------------------------------------
         // OPCION 3
-        // AGREGAR FILA
-        // -------------------------------------
+        // --------------------------------------------------
 
         else if (opcion == 3)
         {
             int posicion;
 
             cout << endl;
-            cout << "=== AGREGAR FILA ===" << endl;
+            cout << "=== AGREGAR FILA ==="
+                 << endl;
 
             cout << "Ingrese la posicion de la nueva fila (0 - "
                  << alto
@@ -186,20 +221,24 @@ int main()
 
             if (posicion < 0 || posicion > alto)
             {
-                cout << "Posicion invalida." << endl;
+                cout << "Posicion invalida."
+                     << endl;
             }
             else
             {
-                tablero = agregarFila(tablero,
-                                      ancho,
-                                      alto,
-                                      posicion);
+                tablero =
+                    agregarFila(tablero,
+                                ancho,
+                                alto,
+                                posicion);
 
                 alto++;
 
                 liberarMarcador(eliminadas);
 
-                eliminadas = crearMarcador(ancho, alto);;
+                eliminadas =
+                    crearMarcador(ancho,
+                                  alto);
 
                 cout << endl;
                 cout << "Fila agregada correctamente."
@@ -215,17 +254,17 @@ int main()
             }
         }
 
-        // -------------------------------------
+        // --------------------------------------------------
         // OPCION 4
-        // ELIMINAR FILA
-        // -------------------------------------
+        // --------------------------------------------------
 
         else if (opcion == 4)
         {
             int posicion;
 
             cout << endl;
-            cout << "=== ELIMINAR FILA ===" << endl;
+            cout << "=== ELIMINAR FILA ==="
+                 << endl;
 
             cout << "Ingrese la posicion de la fila (0 - "
                  << alto - 1
@@ -235,7 +274,8 @@ int main()
 
             if (posicion < 0 || posicion >= alto)
             {
-                cout << "Posicion invalida." << endl;
+                cout << "Posicion invalida."
+                     << endl;
             }
             else if (alto <= 1)
             {
@@ -244,16 +284,19 @@ int main()
             }
             else
             {
-                tablero = eliminarFila(tablero,
-                                       ancho,
-                                       alto,
-                                       posicion);
+                tablero =
+                    eliminarFila(tablero,
+                                 ancho,
+                                 alto,
+                                 posicion);
 
                 alto--;
 
                 liberarMarcador(eliminadas);
 
-                eliminadas = crearMarcador(ancho, alto);
+                eliminadas =
+                    crearMarcador(ancho,
+                                  alto);
 
                 cout << endl;
                 cout << "Fila eliminada correctamente."
@@ -269,17 +312,17 @@ int main()
             }
         }
 
-        // -------------------------------------
+        // --------------------------------------------------
         // OPCION 5
-        // AGREGAR COLUMNA
-        // -------------------------------------
+        // --------------------------------------------------
 
         else if (opcion == 5)
         {
             int posicion;
 
             cout << endl;
-            cout << "=== AGREGAR COLUMNA ===" << endl;
+            cout << "=== AGREGAR COLUMNA ==="
+                 << endl;
 
             cout << "Ingrese la posicion de la nueva columna (0 - "
                  << ancho
@@ -289,20 +332,24 @@ int main()
 
             if (posicion < 0 || posicion > ancho)
             {
-                cout << "Posicion invalida." << endl;
+                cout << "Posicion invalida."
+                     << endl;
             }
             else
             {
-                tablero = agregarColumna(tablero,
-                                         ancho,
-                                         alto,
-                                         posicion);
+                tablero =
+                    agregarColumna(tablero,
+                                   ancho,
+                                   alto,
+                                   posicion);
 
                 ancho++;
 
                 liberarMarcador(eliminadas);
 
-                eliminadas = crearMarcador(ancho, alto);
+                eliminadas =
+                    crearMarcador(ancho,
+                                  alto);
 
                 cout << endl;
                 cout << "Columna agregada correctamente."
@@ -318,17 +365,17 @@ int main()
             }
         }
 
-        // -------------------------------------
+        // --------------------------------------------------
         // OPCION 6
-        // ELIMINAR COLUMNA
-        // -------------------------------------
+        // --------------------------------------------------
 
         else if (opcion == 6)
         {
             int posicion;
 
             cout << endl;
-            cout << "=== ELIMINAR COLUMNA ===" << endl;
+            cout << "=== ELIMINAR COLUMNA ==="
+                 << endl;
 
             cout << "Ingrese la posicion de la columna (0 - "
                  << ancho - 1
@@ -338,7 +385,8 @@ int main()
 
             if (posicion < 0 || posicion >= ancho)
             {
-                cout << "Posicion invalida." << endl;
+                cout << "Posicion invalida."
+                     << endl;
             }
             else if (ancho <= 1)
             {
@@ -347,16 +395,19 @@ int main()
             }
             else
             {
-                tablero = eliminarColumna(tablero,
-                                          ancho,
-                                          alto,
-                                          posicion);
+                tablero =
+                    eliminarColumna(tablero,
+                                    ancho,
+                                    alto,
+                                    posicion);
 
                 ancho--;
 
                 liberarMarcador(eliminadas);
 
-                eliminadas = crearMarcador(ancho, alto);
+                eliminadas =
+                    crearMarcador(ancho,
+                                  alto);
 
                 cout << endl;
                 cout << "Columna eliminada correctamente."
@@ -372,48 +423,69 @@ int main()
             }
         }
 
-        // -------------------------------------
+        // --------------------------------------------------
         // OPCION 7
-        // ESTADISTICAS
-        // -------------------------------------
+        // --------------------------------------------------
 
         else if (opcion == 7)
         {
             cout << endl;
-            cout << "Las estadisticas "
-                    "aun no estan implementadas."
+            cout << "========== ESTADISTICAS =========="
+                 << endl;
+
+            cout << "Ancho actual: "
+                 << ancho
+                 << endl;
+
+            cout << "Alto actual: "
+                 << alto
+                 << endl;
+
+            cout << "Eliminaciones realizadas por el usuario: "
+                 << eliminacionesUsuario
+                 << endl;
+
+            cout << "Fichas eliminadas: "
+                 << fichasEliminadas
+                 << endl;
+
+            cout << "Combinaciones detectadas: "
+                 << combinacionesDetectadas
+                 << endl;
+
+            cout << "Cascadas de la ultima eliminacion: "
+                 << cascadasUltimaEliminacion
+                 << endl;
+
+            cout << "Puntuacion: "
+                 << puntuacion
+                 << endl;
+
+            cout << "================================="
                  << endl;
         }
 
-        // -------------------------------------
+        // --------------------------------------------------
         // OPCION 8
-        // SALIR
-        // -------------------------------------
+        // --------------------------------------------------
 
         else if (opcion == 8)
         {
             cout << endl;
-            cout << "Saliendo del juego..." << endl;
+            cout << "Saliendo del juego..."
+                 << endl;
         }
-
-        // -------------------------------------
-        // OPCION INVALIDA
-        // -------------------------------------
 
         else
         {
             cout << endl;
-            cout << "Opcion invalida." << endl;
+            cout << "Opcion invalida."
+                 << endl;
         }
 
     } while (opcion != 8);
 
-    // -----------------------------------------
-    // LIBERAR MEMORIA
-    // -----------------------------------------
-
     liberarMarcador(eliminadas);
-
     liberarTablero(tablero);
 
     return 0;

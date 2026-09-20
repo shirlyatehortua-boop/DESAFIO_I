@@ -11,22 +11,26 @@
 
 unsigned char* crearMarcador(int ancho, int alto);
 
-void inicializarMarcador(unsigned char* eliminadas, int ancho, int alto);
+void inicializarMarcador(unsigned char* eliminadas,
+                         int ancho,
+                         int alto);
 
 int detectarCombinaciones(unsigned char* tablero,
                           unsigned char* eliminadas,
                           int ancho,
                           int alto);
 
-void eliminarCombinaciones(unsigned char* tablero,
-                           unsigned char* eliminadas,
-                           int ancho,
-                           int alto);
+int eliminarCombinaciones(unsigned char* tablero,
+                          unsigned char* eliminadas,
+                          int ancho,
+                          int alto);
 
 int procesarCascadas(unsigned char* tablero,
                      unsigned char* eliminadas,
                      int ancho,
-                     int alto);
+                     int alto,
+                     int* fichasEliminadas,
+                     int* combinaciones);
 
 void liberarMarcador(unsigned char* eliminadas);
 
